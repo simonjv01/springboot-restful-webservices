@@ -5,10 +5,9 @@ import com.example.springbootrestfulwebservices.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -25,9 +24,22 @@ public class UserController {
     }
 
     // build get user by id REST API
-    public ResponseEntity<User> getUserById(Long userId) {
+    // http://localhost:8080/api/users/1
+    @GetMapping("{id}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") Long userId) {
         User user = userService.getUserByID(userId);
         return new  ResponseEntity<>(user, HttpStatus.OK);
     }
+
+    // build getAll user REST API
+    // http://localhost:8080/api/users
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+
+
 
 }

@@ -24,4 +24,10 @@ public class UserController {
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
+    // build get user by id REST API
+    public ResponseEntity<User> getUserById(Long userId) {
+        User user = userService.getUserByID(userId);
+        return new  ResponseEntity<>(user, HttpStatus.OK);
+    }
+
 }

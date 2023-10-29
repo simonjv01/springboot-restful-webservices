@@ -2,6 +2,7 @@ package com.example.springbootrestfulwebservices.service.impl;
 
 import com.example.springbootrestfulwebservices.dto.UserDto;
 import com.example.springbootrestfulwebservices.entity.User;
+import com.example.springbootrestfulwebservices.mapper.UserMapper;
 import com.example.springbootrestfulwebservices.repository.UserRepository;
 import com.example.springbootrestfulwebservices.service.UserService;
 import lombok.AllArgsConstructor;
@@ -20,28 +21,20 @@ public class UserServiceImpl implements UserService {
     public UserDto createUser(UserDto userDto) {
 
         // Convert UserDto into User JPA Entity
-        User user1 = new User(
-                userDto.getId(),
-                userDto.getFirstName(),
-                userDto.getLastName(),
-                userDto.getEmail()
-        );
+        User user1 = UserMapper.mapToUser(userDto);
+
         User savedUser = userRepository.save(user1);
 
         // Convert user1 JPA entity to UserDto
-        UserDto savedUserDto = new UserDto(
-                savedUser.getId(),
-                savedUser.getFirstName(),
-                savedUser.getLastName(),
-                savedUser.getEmail()
-        );
+        UserDto savedUserDto = UserMapper.maptToUserDto(savedUser);
         return savedUserDto;
     }
 
     @Override
-    public User getUserByID(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        return user.get();
+    public UserDto getUserByID(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        User user = optionalUser.get();
+        return UserMapper.maptToUserDto(user);
     }
 
     @Override

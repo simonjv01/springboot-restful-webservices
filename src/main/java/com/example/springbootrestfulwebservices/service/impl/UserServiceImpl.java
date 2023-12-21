@@ -19,20 +19,30 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
+
     private ModelMapper modelMapper;
 
     @Override
     public UserDto createUser(UserDto userDto) {
 
         // Convert UserDto into User JPA Entity
+
        // User user1 = UserMapper.mapToUser(userDto);
+
+        // User user1 = UserMapper.mapToUser(userDto);
+
+
         User user1 = modelMapper.map(userDto, User.class);
 
         User savedUser = userRepository.save(user1);
 
         // Convert user1 JPA entity to UserDto
+
         // UserDto savedUserDto = UserMapper.mapToUserDto(savedUser);
         UserDto savedUserDto = modelMapper.map(savedUser, UserDto.class);
+
+//        UserDto savedUserDto = UserMapper.maptToUserDto(savedUser);
+
         return savedUserDto;
     }
 

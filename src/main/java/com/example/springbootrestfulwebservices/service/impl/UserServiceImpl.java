@@ -1,7 +1,9 @@
 package com.example.springbootrestfulwebservices.service.impl;
 
+import com.example.exceptions.ResourceNotFoundException;
 import com.example.springbootrestfulwebservices.dto.UserDto;
 import com.example.springbootrestfulwebservices.entity.User;
+import com.example.springbootrestfulwebservices.mapper.AutoUserMapper;
 import com.example.springbootrestfulwebservices.mapper.UserMapper;
 import com.example.springbootrestfulwebservices.repository.UserRepository;
 import com.example.springbootrestfulwebservices.service.UserService;
@@ -48,9 +50,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByID(Long userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        User user = optionalUser.get();
-        return modelMapper.map(user, UserDto.class);
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new ResourceNotFoundException("user", "id", userId)
+        );
+        
+        return AutoUserMapper.MAPPER.mapToUserDto(user);
     }
 
     @Override
